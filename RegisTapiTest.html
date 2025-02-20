@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Request Test</title>
+</head>
+
+<body>
+    <label for="username">用户名:</label>
+    <input type="text" id="username" required><br>
+
+    <label for="password">密码:</label>
+    <input type="password" id="password" required><br>
+
+    <label for="contactInfo">联系信息:</label>
+    <input type="text" id="contactInfo" required><br>
+
+    <label for="role">身份:</label>
+    <select id="role">
+        <option value="ORGANIZER">ORGANIZER</option>
+        <option value="EXHIBITOR">EXHIBITOR</option>
+        <option value="VISITOR">VISITOR</option>
+    </select><br>
+
+    <button id="testButton">提交注册</button>
+    <div id="responseDiv"></div>
+
+    <script>
+        const testButton = document.getElementById('testButton');
+        const responseDiv = document.getElementById('responseDiv');
+
+        testButton.addEventListener('click', () => {
+            const url = 'http://localhost:8080/api/users/register';
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const contactInfo = document.getElementById('contactInfo').value;
+            const role = document.getElementById('role').value;
+
+            const data = {
+                username: username,
+                password: password,
+                contactInfo: contactInfo,
+                role: role
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(data)
+            })
+           .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+           .then(result => {
+                responseDiv.textContent = result;
+            })
+           .catch(error => {
+                responseDiv.textContent = `请求出错: ${error.message}`;
+            });
+        });
+    </script>
+</body>
+
+</html>

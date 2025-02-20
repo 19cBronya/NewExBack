@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -20,7 +22,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody RegistrationRequestDto requestDto) {
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody RegistrationRequestDto requestDto) {
         RegistrationRequest request = new RegistrationRequest();
         request.setUsername(requestDto.getUsername());
         request.setPassword(requestDto.getPassword());
@@ -28,7 +30,9 @@ public class UserController {
         request.setRole(requestDto.getRole());
 
         userService.registerUser(request);
-        return ResponseEntity.ok("Registration request submitted successfully.");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Registration request submitted successfully.");
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
