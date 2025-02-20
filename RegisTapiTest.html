@@ -33,8 +33,10 @@
 
         testButton.addEventListener('click', () => {
             const url = 'http://localhost:8080/api/users/register';
+            // 在这里添加额外的请求头
             const headers = {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Custom-Header': 'custom-value' // 新增的请求头
             };
 
             const username = document.getElementById('username').value;
